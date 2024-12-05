@@ -14,11 +14,26 @@ generator client {
   binaryTargets = "native"
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Restaurant {
+  id              Int       @id @default(autoincrement())
+  name            String    @unique
+  averageRating   Float?    @default(0) // Can be computed dynamically in your app
+  ratings         Rating[]
+}
+
+model Rating {
+  id            Int       @id @default(autoincrement())
+  value         Float
+  source        String    // Replacing enum with a String field (e.g., "DoorDash", "Relish")
+  reviewerId    Int
+  reviewer      Reviewer  @relation(fields: [reviewerId], references: [id])
+  restaurantId  Int
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+  date          DateTime   @default(now())
+}
+
+model Reviewer {
+  id                          Int       @id @default(autoincrement())
+  name                        String
+  ratings                     Rating[]
 }
