@@ -1,26 +1,27 @@
 {
-  "name": "hello-next",
-  "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "@prisma/client": "^6.0.1",
-    "next": "^15.0.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-markdown": "^9.0.1"
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "api",
+      "web"
+    ]
   },
   "devDependencies": {
-    "@types/node": "^22.10.1",
-    "@types/react": "^18.3.13",
-    "prisma": "^6.0.1",
-    "typescript": "^5.7.2"
+    "@redwoodjs/core": "8.4.1",
+    "@redwoodjs/project-config": "8.4.1"
+  },
+  "eslintConfig": {
+    "extends": "@redwoodjs/eslint-config",
+    "root": true
+  },
+  "engines": {
+    "node": "=20.x"
+  },
+  "prisma": {
+    "seed": "yarn rw exec seed"
+  },
+  "packageManager": "yarn@4.4.0",
+  "resolutions": {
+    "@storybook/react-dom-shim@npm:7.6.17": "https://verdaccio.tobbe.dev/@storybook/react-dom-shim/-/react-dom-shim-8.0.8.tgz"
   }
 }
