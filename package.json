@@ -22,5 +22,6 @@
   "bugs": {
     "url": "https://github.com/jhayes-tc/lunch/issues"
   },
-  "homepage": "https://github.com/jhayes-tc/lunch#readme"
+  "homepage": "https://github.com/jhayes-tc/lunch#readme",
+  "packageManager": "npm@10.8.1"
 }
