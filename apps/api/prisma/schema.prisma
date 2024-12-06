@@ -1,0 +1,51 @@
+// Don't forget to tell Prisma about your edits to this file using
+// `yarn rw prisma migrate dev` or `yarn rw prisma db push`.
+// `migrate` is like committing while `push` is for prototyping.
+// Read more about both here:
+// https://www.prisma.io/docs/orm/prisma-migrate
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "native"
+}
+
+model Restaurant {
+  id            Int      @id @default(autoincrement())
+  name          String   @unique
+  averageRating Float?   @default(0) // Can be computed dynamically in your app
+  ratings       Rating[]
+}
+
+model Rating {
+  id           Int        @id @default(autoincrement())
+  value        Float
+  source       String // Replacing enum with a String field (e.g., "DoorDash", "Relish")
+  reviewerId   Int
+  reviewer     Reviewer   @relation(fields: [reviewerId], references: [id])
+  restaurantId Int
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  date         DateTime   @default(now())
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  reviewerId   Int?      @unique
+  reviewer     Reviewer? @relation(fields: [reviewerId], references: [id])
+}
+
+model Reviewer {
+  id      Int      @id @default(autoincrement())
+  name    String
+  ratings Rating[]
+  userId  Int?
+  user    User?
+}
