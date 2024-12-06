@@ -1,27 +1,26 @@
 {
-  "private": true,
-  "workspaces": {
-    "packages": [
-      "api",
-      "web"
-    ]
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "node apps/api/dist/main"
   },
   "devDependencies": {
-    "@redwoodjs/core": "8.4.1",
-    "@redwoodjs/project-config": "8.4.1"
+    "turbo": "^2.3.3"
   },
-  "eslintConfig": {
-    "extends": "@redwoodjs/eslint-config",
-    "root": true
+  "workspaces": [
+    "apps/*"
+  ],
+  "name": "lunch",
+  "version": "1.0.0",
+  "description": "Help get lunch recommendations through data",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhayes-tc/lunch.git"
   },
-  "engines": {
-    "node": "=20.x"
+  "author": "Jake Hayes",
+  "bugs": {
+    "url": "https://github.com/jhayes-tc/lunch/issues"
   },
-  "prisma": {
-    "seed": "yarn rw exec seed"
-  },
-  "packageManager": "yarn@4.4.0",
-  "resolutions": {
-    "@storybook/react-dom-shim@npm:7.6.17": "https://verdaccio.tobbe.dev/@storybook/react-dom-shim/-/react-dom-shim-8.0.8.tgz"
-  }
+  "homepage": "https://github.com/jhayes-tc/lunch#readme"
 }
