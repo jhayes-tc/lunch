@@ -7,6 +7,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProfileController } from './profile/profile.controller';
+import { ReviewersModule } from './reviewers/reviewers.module';
+import { RestaurantsModule } from './restaurants/restaurants.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { ProfileController } from './profile/profile.controller';
     PrismaModule,
     AuthModule,
     UsersModule,
+    ReviewersModule,
+    RestaurantsModule,
   ],
   controllers: [AppController, ProfileController],
   providers: [AppService],
