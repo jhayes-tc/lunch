@@ -1,31 +1,41 @@
 import { useState } from "react";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import Modal from "./core/modal";
 import {
+  AvailableReviewers,
   useCreateAccountMutation,
-  useLazyGetAvailableReviewersQuery,
+  useGetAvailableReviewersQuery,
   useLoginMutation,
 } from "../../services/authSlice";
+import { EnvelopeIcon, KeyIcon } from "@heroicons/react/24/outline";
 
 const AuthModal = ({ onClose }: AuthModalProps) => {
   const [isSignup, setIsSignup] = useState(false);
-  const [selectedReviewer, setSelectedReviewer] = useState<
-    string | undefined
-  >();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [newName, setNewName] = useState('');
+  const [selectedPerson, setSelectedPerson] = useState<AvailableReviewers | null>();
   const [login] = useLoginMutation();
   const [createAccount] = useCreateAccountMutation();
-  const { data: availableReviewers } = useLazyGetAvailableReviewersQuery();
+  const { data: availableReviewers, isLoading: reviewersLoading } = useGetAvailableReviewersQuery();
 
   const onSubmit = () => {
     if (isSignup) {
-      createAccount({ email: "", password: "", reviewerId: 1 });
+      createAccount(
+        {
+          email,
+          password,
+          reviewerId: selectedPerson === undefined || selectedPerson === null || selectedPerson.id === -1 ? undefined : selectedPerson.id,
+          reviewerName: selectedPerson === undefined || selectedPerson === null || selectedPerson.id === -1 ? newName : undefined
+        });
     } else {
-      login({ email: "", password: "" });
+      login({ email, password });
     }
   };
 
   return (
     <Modal open onClose={onClose} closeOnOutsideClick>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center w-96 h-96">
         <div className="w-full max-w-sm p-6 text-primary rounded-lg">
           <div className="mb-6 border border-primary text-2xl font-bold text-center flex justify-around">
             <button
@@ -44,43 +54,44 @@ const AuthModal = ({ onClose }: AuthModalProps) => {
             </button>
           </div>
           <form className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium" htmlFor="email">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                className="w-full input input-bordered"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium" htmlFor="password">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                className="w-full input input-bordered"
-                required
-              />
-            </div>
+            <label className="input input-bordered flex items-center gap-2">
+              <EnvelopeIcon className="h-4 w-4 opacity-70" />
+              <input type="text" className="grow" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </label>
+            <label className="input input-bordered flex items-center gap-2">
+              <KeyIcon className="h-4 w-4 opacity-70" />
+              <input type="password" className="grow" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </label>
             {isSignup && (
-              <div>
-                <label className="block text-sm font-medium" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  placeholder="Enter your name"
-                  className="w-full input input-bordered"
-                  required
-                />
-              </div>
+              <>
+                <Listbox value={selectedPerson} onChange={setSelectedPerson}>
+                  <ListboxButton className="w-full border rounded p-2 flex">{selectedPerson?.name ?? 'Select to connect'}</ListboxButton>
+                  <ListboxOptions anchor="bottom" className="z-10 bg-neutral max-h-72 rounded overflow-y-auto flex flex-col justify-start w-56">
+                    <ListboxOption key={-1} value={{ id: -1, name: "New" }} className="data-[focus]:bg-blue-900 p-2 py-0 italic">
+                      New Reviewer
+                    </ListboxOption>
+                    {reviewersLoading ? <span /> : <>{availableReviewers!.map((person) => (
+                      <ListboxOption key={person.id} value={person} className="data-[focus]:bg-blue-900 p-2">
+                        {person.name}
+                      </ListboxOption>
+                    ))}</>}
+                  </ListboxOptions>
+                </Listbox>
+                {selectedPerson && selectedPerson.id === -1 && <div>
+                  <label className="block text-sm font-medium" htmlFor="name">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter your name"
+                    className="w-full input input-bordered"
+                    required
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                  />
+                </div>}
+              </>
             )}
             <button
               type="button"
