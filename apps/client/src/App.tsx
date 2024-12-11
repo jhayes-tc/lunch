@@ -8,16 +8,18 @@ import { store } from "./store/store";
 
 function App() {
   return (
-    <Provider store={store}>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <ModalRenderer />
-      </Router>
-    </Provider>
+    <div className="max-h-screen overflow-y-auto">
+      <Provider store={store}>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <ModalRenderer />
+        </Router>
+      </Provider>
+    </div>
   );
 }
 
