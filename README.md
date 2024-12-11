@@ -73,6 +73,9 @@ A pipeline could be easily setup to do these steps. But this is all TypeScript.
 
 Build it all with one command, this will also keep a cache for anything unchanged, so building should be faster the second time.
 
+> [!NOTE]
+> After doing setup
+
 ```bash
 npm run build
 ```
