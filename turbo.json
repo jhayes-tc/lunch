@@ -11,6 +11,12 @@
             "outputs": [
                 "dist/**"
             ]
+        },
+        "prisma:generate": {
+            "outputs": []
+        },
+        "prisma:migrate": {
+            "outputs": []
         }
     }
 }
