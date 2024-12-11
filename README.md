@@ -39,8 +39,12 @@ It's a monorepo, but you can run this from the root
 npm run dev
 ```
 
+> [!WARNING]
+> I have had some problems with the frontend freezing when using turbo _after_ adding DaisyUI. So I have been running them in separate terminals, would appreciate someone fixing that though.
+
 ### Alternatively you can run each in a separate terminal
 
+> [!NOTE]
 > After doing setup
 
 Terminal #1
